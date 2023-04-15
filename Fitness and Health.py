@@ -1,4 +1,6 @@
 import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
 
 def calculate_bmi(height, weight):
     height = height / 100.0
@@ -20,52 +22,62 @@ def calculate_bmi_gui():
         height = float(height_entry.get())
         weight = float(weight_entry.get())
     except ValueError:
-        error_label.config(text="Please enter valid values for height and weight.", fg="red")
+        messagebox.showerror("Error", "Please enter valid values for height and weight.")
         return
     bmi = calculate_bmi(height, weight)
     bmi_text.set(f"Your BMI is {bmi:.2f}")
     workout_plan_text.set(suggest_workout_plan(bmi))
-    error_label.config(text="")
 
 # Create the GUI
 root = tk.Tk()
 root.title("BMI Calculator")
+root.geometry("500x350")
+root.resizable(False, False)
 
 # Create the header label
 header_label = tk.Label(root, text="BMI Calculator", font=("Arial", 24), pady=10)
 header_label.pack()
 
 # Create the input fields for height and weight
-input_frame = tk.Frame(root)
-input_frame.pack(pady=10)
+input_frame = tk.Frame(root, padx=20, pady=10)
+input_frame.pack()
 
 height_label = tk.Label(input_frame, text="Height (cm):", font=("Arial", 14))
-height_label.grid(row=0, column=0, padx=5)
+height_label.grid(row=0, column=0, padx=5, pady=5)
 
 height_entry = tk.Entry(input_frame, font=("Arial", 14))
-height_entry.grid(row=0, column=1, padx=5)
+height_entry.grid(row=0, column=1, padx=5, pady=5)
+height_entry.focus()
 
 weight_label = tk.Label(input_frame, text="Weight (kg):", font=("Arial", 14))
-weight_label.grid(row=1, column=0, padx=5)
+weight_label.grid(row=1, column=0, padx=5, pady=5)
 
 weight_entry = tk.Entry(input_frame, font=("Arial", 14))
-weight_entry.grid(row=1, column=1, padx=5)
+weight_entry.grid(row=1, column=1, padx=5, pady=5)
 
 # Create the calculate button
 calculate_button = tk.Button(root, text="Calculate", font=("Arial", 14), command=calculate_bmi_gui)
-calculate_button.pack()
+calculate_button.pack(pady=10)
 
 # Create the BMI and workout plan labels
+bmi_frame = tk.Frame(root, padx=20, pady=10)
+bmi_frame.pack()
+
 bmi_text = tk.StringVar()
-bmi_label = tk.Label(root, textvariable=bmi_text, font=("Arial", 18), pady=10)
+bmi_label = tk.Label(bmi_frame, textvariable=bmi_text, font=("Arial", 18), pady=5)
 bmi_label.pack()
 
 workout_plan_text = tk.StringVar()
-workout_plan_label = tk.Label(root, textvariable=workout_plan_text, font=("Arial", 14), wraplength=500)
+workout_plan_label = tk.Label(bmi_frame, textvariable=workout_plan_text, font=("Arial", 14), wraplength=400)
 workout_plan_label.pack()
 
 # Create the error label
-error_label = tk.Label(root, fg="red")
+error_frame = tk.Frame(root)
+error_frame.pack()
+
+error_label = tk.Label(error_frame, fg="red")
 error_label.pack()
 
-root.mainloop()
+# Create the about button
+def show_about():
+    about_text = "This app was created by [Zohra Ahmad]."
